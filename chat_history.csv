@@ -1,0 +1,7 @@
+timestamp,sender,receiver,message_type,message
+2026-07-11 15:52:56,nihar,ALL,BROADCAST,hello
+2026-07-11 15:53:02,bishal,ALL,BROADCAST,hi
+2026-07-11 15:53:09,rahul,ALL,BROADCAST,how are you
+2026-07-11 15:55:02,nihar,ALL,BROADCAST,/quit
+2026-07-11 15:55:06,rahul,ALL,BROADCAST,/quit
+2026-07-11 15:55:10,bishal,ALL,BROADCAST,/quit
