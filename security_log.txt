@@ -1,0 +1,101 @@
+[2026-07-15 12:13:01] LOGOUT | User: bhargav | User logged out
+[2026-07-15 12:13:01] LOGOUT | User: bhargav | Disconnected
+[2026-07-15 12:13:05] LOGOUT | User: admin | User logged out
+[2026-07-15 12:13:05] LOGOUT | User: admin | Disconnected
+[2026-07-15 12:13:10] SERVER_SHUTDOWN | User: SYSTEM | Server shutting down
+[2026-07-15 12:14:21] SERVER_START | User: SYSTEM | Server started on 0.0.0.0:5000
+[2026-07-15 12:16:13] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:16:13] LOGIN_SUCCESS | User: admin | Login successful
+[2026-07-15 12:16:13] SESSION_STARTED | User: admin | Connected from 127.0.0.1:51910
+[2026-07-15 12:17:41] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 12:17:41] LOGIN_SUCCESS | User: bhargav | Login successful
+[2026-07-15 12:17:41] SESSION_STARTED | User: bhargav | Connected from 127.0.0.1:60518
+[2026-07-15 12:23:50] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:23:50] LOGIN_SUCCESS | User: admin | Login successful
+[2026-07-15 12:23:50] DUPLICATE_LOGIN_ATTEMPT | User: admin | User already logged in
+[2026-07-15 12:25:52] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:25:52] LOGIN_FAILED | User: admin | Incorrect password. Attempt 1
+[2026-07-15 12:25:52] AUTH_FAILED | User: admin | Invalid username or password
+[2026-07-15 12:26:45] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:26:45] LOGIN_FAILED | User: admin | Incorrect password. Attempt 2
+[2026-07-15 12:26:45] AUTH_FAILED | User: admin | Invalid username or password
+[2026-07-15 12:26:51] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:26:51] LOGIN_FAILED | User: admin | Incorrect password. Attempt 3
+[2026-07-15 12:26:51] AUTH_FAILED | User: admin | Invalid username or password
+[2026-07-15 12:26:56] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:26:56] LOGIN_FAILED | User: admin | Incorrect password. Attempt 4
+[2026-07-15 12:26:56] AUTH_FAILED | User: admin | Invalid username or password
+[2026-07-15 12:27:00] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:27:00] ACCOUNT_BLOCKED | User: admin | Blocked for 5.0 minutes due to 5 failed attempts
+[2026-07-15 12:27:00] AUTH_FAILED | User: admin | Account blocked for 5.0 minutes
+[2026-07-15 12:28:50] LOGOUT | User: bhargav | User logged out
+[2026-07-15 12:28:50] LOGOUT | User: bhargav | Disconnected
+[2026-07-15 12:30:58] SESSION_TIMEOUT | User: admin | Session timed out
+[2026-07-15 12:30:58] LOGOUT | User: admin | Session timeout
+[2026-07-15 12:30:58] LOGOUT | User: admin | Disconnected
+[2026-07-15 12:32:14] AUTH_ATTEMPT | User: @@@### | Authentication attempt
+[2026-07-15 12:32:14] AUTH_FAILED | User: @@@### | Username can only contain letters, numbers, and underscores
+[2026-07-15 12:36:24] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 12:36:24] LOGIN_SUCCESS | User: bhargav | Login successful
+[2026-07-15 12:36:24] SESSION_STARTED | User: bhargav | Connected from 127.0.0.1:41372
+[2026-07-15 12:37:30] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:37:30] LOGIN_SUCCESS | User: admin | Login successful
+[2026-07-15 12:37:30] SESSION_STARTED | User: admin | Connected from 127.0.0.1:44674
+[2026-07-15 12:44:19] SERVER_SHUTDOWN | User: SYSTEM | Server shutting down
+[2026-07-15 12:46:33] SERVER_START | User: SYSTEM | Server started on 0.0.0.0:5000
+[2026-07-15 12:46:54] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:46:54] LOGIN_SUCCESS | User: admin | Login successful
+[2026-07-15 12:46:54] SESSION_STARTED | User: admin | Connected from 127.0.0.1:56682
+[2026-07-15 12:47:15] LOGOUT | User: admin | User logged out
+[2026-07-15 12:47:15] LOGOUT | User: admin | Disconnected
+[2026-07-15 12:47:50] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 12:47:50] LOGIN_SUCCESS | User: bhargav | Login successful
+[2026-07-15 12:47:50] SESSION_STARTED | User: bhargav | Connected from 127.0.0.1:34446
+[2026-07-15 12:47:56] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:47:56] LOGIN_SUCCESS | User: admin | Login successful
+[2026-07-15 12:47:56] SESSION_STARTED | User: admin | Connected from 127.0.0.1:58036
+[2026-07-15 12:53:18] LOGOUT | User: admin | User logged out
+[2026-07-15 12:53:18] LOGOUT | User: admin | Disconnected
+[2026-07-15 12:53:22] LOGOUT | User: bhargav | User logged out
+[2026-07-15 12:53:22] LOGOUT | User: bhargav | Disconnected
+[2026-07-15 12:53:41] SERVER_SHUTDOWN | User: SYSTEM | Server shutting down
+[2026-07-15 12:53:55] SERVER_START | User: SYSTEM | Server started on 0.0.0.0:5000
+[2026-07-15 12:55:03] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 12:55:03] LOGIN_SUCCESS | User: admin | Login successful
+[2026-07-15 12:55:03] SESSION_STARTED | User: admin | Connected from 127.0.0.1:44560
+[2026-07-15 12:55:05] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 12:55:05] LOGIN_SUCCESS | User: bhargav | Login successful
+[2026-07-15 12:55:05] SESSION_STARTED | User: bhargav | Connected from 127.0.0.1:57256
+[2026-07-15 13:03:16] LOGOUT | User: admin | User logged out
+[2026-07-15 13:03:16] LOGOUT | User: admin | Disconnected
+[2026-07-15 13:03:21] LOGOUT | User: bhargav | User logged out
+[2026-07-15 13:03:21] LOGOUT | User: bhargav | Disconnected
+[2026-07-15 13:03:28] SERVER_SHUTDOWN | User: SYSTEM | Server shutting down
+[2026-07-15 13:08:09] SERVER_START | User: SYSTEM | Server started on 0.0.0.0:5000
+[2026-07-15 13:09:04] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 13:09:04] LOGIN_SUCCESS | User: admin | Login successful
+[2026-07-15 13:09:04] SESSION_STARTED | User: admin | Connected from 10.0.0.2:54046
+[2026-07-15 13:14:48] SERVER_START | User: SYSTEM | Server started on 0.0.0.0:5000
+[2026-07-15 13:16:04] AUTH_ATTEMPT | User: admin | Authentication attempt
+[2026-07-15 13:16:04] LOGIN_SUCCESS | User: admin | Login successful
+[2026-07-15 13:16:04] SESSION_STARTED | User: admin | Connected from 10.0.0.2:50566
+[2026-07-15 13:16:07] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 13:16:07] LOGIN_SUCCESS | User: bhargav | Login successful
+[2026-07-15 13:16:07] SESSION_STARTED | User: bhargav | Connected from 10.0.0.3:48784
+[2026-07-15 13:20:08] LOGOUT | User: bhargav | User logged out
+[2026-07-15 13:20:08] LOGOUT | User: bhargav | Disconnected
+[2026-07-15 13:22:10] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 13:22:10] LOGIN_FAILED | User: bhargav | Incorrect password. Attempt 1
+[2026-07-15 13:22:10] AUTH_FAILED | User: bhargav | Invalid username or password
+[2026-07-15 13:22:58] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 13:22:58] LOGIN_FAILED | User: bhargav | Incorrect password. Attempt 2
+[2026-07-15 13:22:58] AUTH_FAILED | User: bhargav | Invalid username or password
+[2026-07-15 13:23:04] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 13:23:04] LOGIN_FAILED | User: bhargav | Incorrect password. Attempt 3
+[2026-07-15 13:23:04] AUTH_FAILED | User: bhargav | Invalid username or password
+[2026-07-15 13:23:07] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 13:23:07] LOGIN_FAILED | User: bhargav | Incorrect password. Attempt 4
+[2026-07-15 13:23:07] AUTH_FAILED | User: bhargav | Invalid username or password
+[2026-07-15 13:23:11] AUTH_ATTEMPT | User: bhargav | Authentication attempt
+[2026-07-15 13:23:11] ACCOUNT_BLOCKED | User: bhargav | Blocked for 5.0 minutes due to 5 failed attempts
+[2026-07-15 13:23:11] AUTH_FAILED | User: bhargav | Account blocked for 5.0 minutes

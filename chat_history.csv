@@ -1,7 +1,11 @@
 timestamp,sender,receiver,message_type,message
-2026-07-11 15:52:56,nihar,ALL,BROADCAST,hello
-2026-07-11 15:53:02,bishal,ALL,BROADCAST,hi
-2026-07-11 15:53:09,rahul,ALL,BROADCAST,how are you
-2026-07-11 15:55:02,nihar,ALL,BROADCAST,/quit
-2026-07-11 15:55:06,rahul,ALL,BROADCAST,/quit
-2026-07-11 15:55:10,bishal,ALL,BROADCAST,/quit
+2026-07-15 12:18:11,admin,ALL,BROADCAST,Hello Everyone
+2026-07-15 12:18:31,bhargav,ALL,BROADCAST,Hi guys
+2026-07-15 12:20:57,admin,bhargav,PRIVATE,how are you?
+2026-07-15 12:21:27,bhargav,admin,PRIVATE,"i am fine, what about you?"
+2026-07-15 13:02:47,admin,ALL,BROADCAST,"Thank you guys, bye"
+2026-07-15 13:10:42,admin,ALL,BROADCAST,Hello Everyone!
+2026-07-15 13:17:23,admin,ALL,BROADCAST,Good Afternoon everyone
+2026-07-15 13:17:52,bhargav,ALL,BROADCAST,had lunch?
+2026-07-15 13:18:45,admin,bhargav,PRIVATE,"yeah, what about you"
+2026-07-15 13:19:03,bhargav,admin,PRIVATE,done

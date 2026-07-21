@@ -2,14 +2,23 @@ import socket
 import threading
 import tkinter as tk
 from tkinter import scrolledtext, messagebox
+import hashlib
+import time
 
 PORT = 5000
+SESSION_TIMEOUT = 600
 
 client = None
+username = ""
+authenticated = False
+last_activity = time.time()
+login_attempts = 0
+max_attempts = 5
+blocked_until = 0
 
 root = tk.Tk()
-root.title("TCP Chat Client")
-root.geometry("750x500")
+root.title("Secure TCP Chat Client")
+root.geometry("750x550")
 root.resizable(False, False)
 
 login_frame = tk.Frame(root)
@@ -17,28 +26,36 @@ login_frame.pack(fill="both", expand=True)
 
 tk.Label(
     login_frame,
-    text="TCP Chat Client",
+    text="Secure TCP Chat Client",
     font=("Arial", 18, "bold")
 ).pack(pady=20)
 
 tk.Label(login_frame, text="Server IP").pack()
-
 host_entry = tk.Entry(login_frame, width=30)
 host_entry.insert(0, "10.0.0.1")
 host_entry.pack(pady=5)
 
 tk.Label(login_frame, text="Username").pack()
-
 username_entry = tk.Entry(login_frame, width=30)
 username_entry.pack(pady=5)
+
+tk.Label(login_frame, text="Password").pack()
+password_entry = tk.Entry(login_frame, width=30, show="*")
+password_entry.pack(pady=5)
 
 status_label = tk.Label(
     login_frame,
     text="Not Connected",
     fg="red"
 )
-status_label.pack(pady=10)
+status_label.pack(pady=5)
 
+auth_status_label = tk.Label(
+    login_frame,
+    text="",
+    fg="red"
+)
+auth_status_label.pack(pady=5)
 
 chat_frame = tk.Frame(root)
 
@@ -75,12 +92,12 @@ send_btn.pack(
     padx=5
 )
 
-disconnect_btn = tk.Button(
+logout_btn = tk.Button(
     right_frame,
-    text="Disconnect",
+    text="Logout",
     width=18
 )
-disconnect_btn.pack(pady=10)
+logout_btn.pack(pady=10)
 
 tk.Label(
     right_frame,
@@ -94,169 +111,222 @@ online_list = tk.Listbox(
 )
 online_list.pack(padx=10)
 
+session_label = tk.Label(
+    right_frame,
+    text="",
+    fg="blue",
+    font=("Arial", 8)
+)
+session_label.pack(pady=5)
+
+def update_session_timer():
+    if authenticated:
+        elapsed = int(time.time() - last_activity)
+        remaining = SESSION_TIMEOUT - elapsed
+        if remaining > 0:
+            mins = remaining // 60
+            secs = remaining % 60
+            session_label.config(text=f"Session: {mins:02d}:{secs:02d}")
+            root.after(1000, update_session_timer)
+        else:
+            session_label.config(text="Session Expired")
+            messagebox.showwarning("Session Timeout", "Session expired. Please login again.")
+            logout()
+
 def receive():
+    global authenticated, last_activity
 
     while True:
-
         try:
+            data = client.recv(4096).decode()
 
-            message = client.recv(4096).decode()
-
-            if not message:
+            if not data:
                 break
 
-            if message.startswith("ONLINE:"):
+            # Split multiple messages received together
+            messages = data.split("\n")
 
-                users = message.replace(
-                    "ONLINE:",
-                    ""
-                ).split(",")
+            for message in messages:
 
-                online_list.delete(0, tk.END)
+                message = message.strip()
 
-                for user in users:
+                if not message:
+                    continue
 
-                    if user.strip():
-                        online_list.insert(
-                            tk.END,
-                            user.strip()
-                        )
+                if message.startswith("ONLINE:"):
+                    users = message.replace("ONLINE:", "").split(",")
 
-            else:
+                    online_list.delete(0, tk.END)
 
-                chat_box.config(state="normal")
+                    for user in users:
+                        user = user.strip()
+                        if user:
+                            online_list.insert(tk.END, user)
 
-                chat_box.insert(
-                    tk.END,
-                    message + "\n"
-                )
+                elif message.startswith("AUTH_FAILED:"):
+                    auth_msg = message.replace("AUTH_FAILED:", "")
+                    auth_status_label.config(text=auth_msg, fg="red")
+                    messagebox.showerror("Authentication Failed", auth_msg)
 
-                chat_box.see(tk.END)
+                elif message.startswith("DUPLICATE_LOGIN:"):
+                    dup_msg = message.replace("DUPLICATE_LOGIN:", "")
+                    auth_status_label.config(text=dup_msg, fg="red")
+                    messagebox.showerror("Duplicate Login", dup_msg)
 
-                chat_box.config(state="disabled")
+                elif message.startswith("LOGOUT:"):
+                    messagebox.showinfo("Logged Out", "You have been logged out.")
+                    logout()
+                    return
 
-        except:
+                else:
+                    last_activity = time.time()
+
+                    chat_box.config(state="normal")
+                    chat_box.insert(tk.END, message + "\n")
+                    chat_box.see(tk.END)
+                    chat_box.config(state="disabled")
+
+        except socket.timeout:
+            continue
+
+        except Exception as e:
+            print("Receive Error:", e)
             break
 
     try:
         client.close()
     except:
         pass
-
-
 def connect_server():
-
-    global client
-
+    global client, username, authenticated, last_activity, login_attempts, blocked_until
+    
     host = host_entry.get().strip()
-
     username = username_entry.get().strip()
-
-    if host == "" or username == "":
-
-        messagebox.showerror(
-            "Error",
-            "Fill all fields."
-        )
-
+    password = password_entry.get().strip()
+    
+    if host == "" or username == "" or password == "":
+        messagebox.showerror("Error", "Fill all fields.")
         return
-
-    client = socket.socket(
-        socket.AF_INET,
-        socket.SOCK_STREAM
-    )
-
+    
+    if blocked_until > time.time():
+        remaining = int((blocked_until - time.time()) / 60)
+        messagebox.showerror("Account Blocked", f"Account blocked. Try again in {remaining} minutes.")
+        return
+    
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.settimeout(30)
+    
     try:
-
         client.connect((host, PORT))
-
     except:
-
-        messagebox.showerror(
-            "Error",
-            "Unable to connect."
-        )
-
+        messagebox.showerror("Error", "Unable to connect to server.")
         return
-
-    client.recv(1024).decode()
-
-    client.send(username.encode())
-
-    welcome = client.recv(4096).decode()
-
-    chat_box.config(state="normal")
-    chat_box.insert(tk.END, welcome + "\n")
-    chat_box.config(state="disabled")
-
-    status_label.config(
-        text="Connected",
-        fg="green"
-    )
-
-    login_frame.pack_forget()
-
-    chat_frame.pack(
-        fill="both",
-        expand=True
-    )
-
-    message_entry.focus_set()
-
-    threading.Thread(
-        target=receive,
-        daemon=True
-    ).start()
-
-
-def send_message():
-    global client
-
-    print("Send button clicked")
-
-    if client is None:
-        print("Client is None")
-        return
-
-    message = message_entry.get().strip()
-    print("Message =", repr(message))
-
-    if not message:
-        print("Empty message")
-        return
-
+    
     try:
-        client.send(message.encode())
-        print("Message sent")
-        message_entry.delete(0, tk.END)
+        
+        server_msg = client.recv(1024).decode()
+
+        if server_msg != "LOGIN":
+            raise Exception("Unexpected server response")
+
+        auth_status_label.config(text="Authenticating...", fg="blue")
+
+        client.send(f"{username}|{password}".encode())
+
+        response = client.recv(4096).decode()
+        
+        if response.startswith("AUTH_FAILED:"):
+            auth_msg = response.replace("AUTH_FAILED:", "")
+            auth_status_label.config(text=auth_msg, fg="red")
+            messagebox.showerror("Authentication Failed", auth_msg)
+            login_attempts += 1
+            
+            if login_attempts >= max_attempts:
+                blocked_until = time.time() + 300
+                messagebox.showwarning("Account Blocked", 
+                    "Too many failed attempts. Account blocked for 5 minutes.")
+            
+            client.close()
+            return
+        
+        if response.startswith("DUPLICATE_LOGIN:"):
+            dup_msg = response.replace("DUPLICATE_LOGIN:", "")
+            auth_status_label.config(text=dup_msg, fg="red")
+            messagebox.showerror("Duplicate Login", dup_msg)
+            client.close()
+            return
+        
+        authenticated = True
+        last_activity = time.time()
+        login_attempts = 0
+        
+        status_label.config(text="Connected", fg="green")
+        auth_status_label.config(text="Authenticated", fg="green")
+        
+        login_frame.pack_forget()
+        chat_frame.pack(fill="both", expand=True)
+               
+        message_entry.focus_set()
+        
+        update_session_timer()
+        
+        threading.Thread(target=receive, daemon=True).start()
+        
     except Exception as e:
-        print("ERROR:", e)
-        messagebox.showerror("Error", str(e))
-
-
-def disconnect():
-
-    global client
-
-    try:
-        client.send("/quit".encode())
+        messagebox.showerror("Error", f"Connection error: {str(e)}")
         client.close()
 
-    except:
-        pass
+def send_message():
+    global client, last_activity
+    
+    if client is None or not authenticated:
+        messagebox.showerror("Error", "Not connected or authenticated.")
+        return
+    
+    message = message_entry.get().strip()
+    
+    if not message:
+        return
+    
+    if len(message) > 4096:
+        messagebox.showerror("Error", "Message too long (max 4096 characters)")
+        return
+    
+    try:
+        client.send(message.encode())
+        last_activity = time.time()
+        message_entry.delete(0, tk.END)
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to send: {str(e)}")
 
-    root.destroy()
-
-
+def logout():
+    global client, authenticated
+    
+    if client:
+        try:
+            client.send("/logout".encode())
+        except:
+            pass
+        try:
+            client.close()
+        except:
+            pass
+    
+    authenticated = False
+    client = None
+    
+    chat_frame.pack_forget()
+    login_frame.pack(fill="both", expand=True)
+    status_label.config(text="Disconnected", fg="red")
+    auth_status_label.config(text="", fg="red")
+    session_label.config(text="")
 
 def on_close():
-
-    disconnect()
-
+    logout()
+    root.destroy()
 
 send_btn.config(command=send_message)
-
-disconnect_btn.config(command=disconnect)
+logout_btn.config(command=logout)
 
 connect_btn = tk.Button(
     login_frame,
@@ -264,19 +334,13 @@ connect_btn = tk.Button(
     width=20,
     command=connect_server
 )
-
-connect_btn.pack(pady=15)
-
+connect_btn.pack(pady=10)
 
 message_entry.bind(
     "<Return>",
     lambda event: (send_message(), "break")[1]
 )
 
-
-root.protocol(
-    "WM_DELETE_WINDOW",
-    on_close
-)
+root.protocol("WM_DELETE_WINDOW", on_close)
 
 root.mainloop()
